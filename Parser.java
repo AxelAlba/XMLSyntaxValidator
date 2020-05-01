@@ -41,8 +41,7 @@ public class Parser {
       }
       System.out.println(line);
       test = (char)reader.read();
-    }
-    catch(Exception e) {
+    } catch(Exception e) {
       e.printStackTrace();
     }
 
@@ -67,6 +66,7 @@ public class Parser {
   boolean isDeclarationValid () {
     int i = 14;
     String s = "";
+
     try {
       if ((char)reader.read() == '<') {
         String line = readTag();
@@ -82,20 +82,25 @@ public class Parser {
               }
             }
             if (!(line.length() - 2 == i)) return false;
-          } catch (NumberFormatException e) { 
-            return false; 
-          }
-
-        } else {
-          return false;
-        }
-      } else {
-        return false;
-      }
+          } catch (NumberFormatException e) { return false; }
+        } else { return false; }
+      } else { return false; }
     } catch(Exception e) {
       e.printStackTrace();
     }
+
     return true;
+  }
+
+  String readElement (String s, int i) {
+    String line = "";
+    try {
+      while (s.charAt(i) != ' ' && ( i < s.length() - 1 )) { line += s.charAt(i++); }
+      if (s.charAt(i) != ' ') line += s.charAt(i);
+    } catch(Exception e) {
+      e.printStackTrace();
+    }
+    return line;
   }
 
 
@@ -120,7 +125,7 @@ public class Parser {
 
           //line -> only takes the string inside '<' and '>'
           //testing if the parsing is correct
-          //if (line.contains(":") || line.contains("-") || line.contains(".")) return false;
+
           strings.add(line);
 
           /*  
@@ -147,17 +152,11 @@ public class Parser {
           */
           
           if (!(line.charAt(0) == '/')) {
-            int i = 0;
-            String s = "";
-            while (line.charAt(i) != ' ' && ( i < line.length() - 1 )) { s += line.charAt(i++); }
-            if (line.charAt(i) != ' ') s += line.charAt(i);
+            String s = readElement(line, 0);
             xmlStack.push(s);
             System.out.println("Pushed " + s);
           } else {
-            int i = 1;
-            String s = "";
-            while (line.charAt(i) != ' ' && ( i < line.length() - 1 )) { s += line.charAt(i++); }
-            s += line.charAt(i);
+            String s = readElement(line, 1);
             if (s.equals(xmlStack.pop())){
               valid = true;
               System.out.println("Popped " + line);
@@ -167,7 +166,7 @@ public class Parser {
           }
 
         }
-          test = (char)reader.read();
+        test = (char)reader.read();
       }
       for (int i = 0; i < strings.size(); i++)
         System.out.println(strings.get(i));
