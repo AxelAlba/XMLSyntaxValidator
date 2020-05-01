@@ -16,23 +16,23 @@ public class Parser {
   }
   boolean isNumber(char c) {
     if (c >= '0' && c <= '9')
-        return true;
+      return true;
 
     return false;
   }
 
   boolean isLetter(char c) {
     if (c >= 'a' && c <= 'z')
-        return true;
+      return true;
     if (c >= 'A' && c <= 'Z')
-        return true;
+      return true;
 
     return false;
   }
 
   //this function returns either yes or no if the file is a valid XML or not.
-  String isValidXml(){
-    String valid = "No";
+  boolean isValidXml(){
+    boolean valid = false;
     //what we should use
     Stack<String> xmlStack  = new Stack<>();
 
@@ -46,14 +46,55 @@ public class Parser {
         {
           String line = "";
           test = (char)reader.read();
+
           while (test != '>')
           {
             line += test;
             test = (char)reader.read();
           }
+
+          //removes unnecessary spaces from lines
+          line = line.replaceAll("( )+", " ");
+          line = line.replace("= ", "=");
+          line = line.replace(" =", "=");
+          line = line.replace(" ?", "?");
+
+          //checks if the first line is an XML declaration
+          if (strings.isEmpty()) 
+          {
+            int i = 14;
+            String s = "";
+            if (line.substring(0, 14).equals("?xml version=\"") && line.charAt( line.length() - 1 ) == '?') {
+              
+              while (line.charAt(i) != '\"' && line.charAt(i) != (char)(-1)) {
+                s += line.charAt(i++);
+              }
+
+              try {
+                Double.parseDouble(s);
+                s = "";
+                if (line.contains("encoding=\"")) {
+                  if (line.substring(i += 2, i + 10).equals("encoding=\"")) {
+                    i += 10;
+                    while (line.charAt(i) != '\"'){
+                      s += line.charAt(i++);
+                    }
+                    if (!(line.length() - 2 == i)) return false;
+                  }
+                }
+              } catch (NumberFormatException e) { 
+                return false; 
+              }
+            } else {
+              return false;
+            }
+
+          }
+
+
           //line -> only takes the string inside '<' and '>'
           //testing if the parsing is correct
-          strings.add(line); 
+          strings.add(line);
 
           /*  
             Main goal here is to push and pop from the stack to determine if it is valid or not. However, in between these lines, an error could occur which would make it not valid
@@ -61,6 +102,7 @@ public class Parser {
             Notes: 
              - How to implement root element syntax? (link for XML Syntax: https://www.tutorialspoint.com/xml/xml_syntax.htm )
           */
+
 
           //check here if the line is the xml declaration
             /* 
@@ -112,7 +154,11 @@ public class Parser {
       //file = new File(Input_url.toURI());
       file = new File(xmlFile);
       Parser parser = new Parser(file);
-      System.out.println(parser.isValidXml());
+
+      if (parser.isValidXml()) 
+        System.out.println("Yes");
+      else System.out.println("No");
+
     }
     catch (Exception e){
       e.printStackTrace();
