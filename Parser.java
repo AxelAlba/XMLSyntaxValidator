@@ -46,26 +46,23 @@ public class Parser {
 
     try {
       char test = (char)reader.read();
-        if (test == '<')
-        {
+        if (test == '<') {
           test = (char)reader.read();
-
-          while (test != '>')
-          {
+          while (test != '>') {
             line += test;
             test = (char)reader.read();
           }
         }
 
+        //removes unnecessary spaces
         line = line.replaceAll("( )+", " ");
         line = line.replace("= ", "=");
         line = line.replace(" =", "=");
         line = line.replace(" ?", "?");
 
         if (line.substring(0, 14).equals("?xml version=\"") && line.charAt( line.length() - 1 ) == '?') {
-          
-          while (line.charAt(i) != '\"' && line.charAt(i) != (char)(-1)) { s += line.charAt(i++); }
 
+          while (line.charAt(i) != '\"' && line.charAt(i) != (char)(-1)) { s += line.charAt(i++); }
           try {
             Double.parseDouble(s);
             s = "";
@@ -83,6 +80,7 @@ public class Parser {
         } else {
           return false;
         }
+
     } catch(Exception e) {
       e.printStackTrace();
     }
@@ -119,6 +117,7 @@ public class Parser {
 
           //line -> only takes the string inside '<' and '>'
           //testing if the parsing is correct
+          if (line.contains(":") || line.contains("-") || line.contains(".")) return false;
           strings.add(line);
 
           /*  
@@ -136,7 +135,6 @@ public class Parser {
               3.) if it is a valid start stack, PUSH only the element to the stack i.e. <element> -> push 'element'
             */
 
-
           //check here if it is the end tag
           /*
             1.) end tags should start with '/'.
@@ -144,6 +142,27 @@ public class Parser {
             3.) end tags should have no attributes.
             4.) Pop from stack if it is a valid end tag.
           */
+          
+          if (!(line.charAt(0) == '/')) {
+            int i = 0;
+            String s = "";
+            while (line.charAt(i) != ' ' && ( i < line.length() - 1 )) { s += line.charAt(i++); }
+            if (line.charAt(i) != ' ') s += line.charAt(i);
+            xmlStack.push(s);
+            System.out.println("Pushed " + s);
+          } else {
+            int i = 1;
+            String s = "";
+            while (line.charAt(i) != ' ' && ( i < line.length() - 1 )) { s += line.charAt(i++); }
+            s += line.charAt(i);
+            if (s.equals(xmlStack.pop())){
+              valid = true;
+              System.out.println("Popped " + line);
+            } else {
+              return false;
+            }
+          }
+
         }
           test = (char)reader.read();
       }
