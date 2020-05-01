@@ -60,15 +60,14 @@ public class Parser {
           line = line.replace(" ?", "?");
 
           //checks if the first line is an XML declaration
-          if (strings.isEmpty()) 
-          {
+          if (strings.isEmpty()) {
+
             int i = 14;
             String s = "";
+
             if (line.substring(0, 14).equals("?xml version=\"") && line.charAt( line.length() - 1 ) == '?') {
               
-              while (line.charAt(i) != '\"' && line.charAt(i) != (char)(-1)) {
-                s += line.charAt(i++);
-              }
+              while (line.charAt(i) != '\"' && line.charAt(i) != (char)(-1)) { s += line.charAt(i++); }
 
               try {
                 Double.parseDouble(s);
@@ -76,9 +75,7 @@ public class Parser {
                 if (line.contains("encoding=\"")) {
                   if (line.substring(i += 2, i + 10).equals("encoding=\"")) {
                     i += 10;
-                    while (line.charAt(i) != '\"'){
-                      s += line.charAt(i++);
-                    }
+                    while (line.charAt(i) != '\"'){ s += line.charAt(i++); }
                     if (!(line.length() - 2 == i)) return false;
                   }
                 }
