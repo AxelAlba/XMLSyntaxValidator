@@ -30,11 +30,75 @@ public class Parser {
     return false;
   }
 
+
+//check here if the line is the xml declaration
+  /* 
+    1.) starts with ? and ends with ?
+    2.) first string is 'xml'. Has attributes, version and encoding.
+    3.) version should have a value of a float.
+    4.) encoding -> any string
+    5.) DO NOT PUSH TO STACK.
+  */
+  boolean isDeclarationValid () {
+    int i = 14;
+    String s = "";
+    String line = "";
+
+    try {
+      char test = (char)reader.read();
+        if (test == '<')
+        {
+          test = (char)reader.read();
+
+          while (test != '>')
+          {
+            line += test;
+            test = (char)reader.read();
+          }
+        }
+
+        line = line.replaceAll("( )+", " ");
+        line = line.replace("= ", "=");
+        line = line.replace(" =", "=");
+        line = line.replace(" ?", "?");
+
+        if (line.substring(0, 14).equals("?xml version=\"") && line.charAt( line.length() - 1 ) == '?') {
+          
+          while (line.charAt(i) != '\"' && line.charAt(i) != (char)(-1)) { s += line.charAt(i++); }
+
+          try {
+            Double.parseDouble(s);
+            s = "";
+            if (line.contains("encoding=\"")) {
+              if (line.substring(i += 2, i + 10).equals("encoding=\"")) {
+                i += 10;
+                while (line.charAt(i) != '\"'){ s += line.charAt(i++); }
+              }
+            }
+            if (!(line.length() - 2 == i)) return false;
+          } catch (NumberFormatException e) { 
+            return false; 
+          }
+
+        } else {
+          return false;
+        }
+    } catch(Exception e) {
+      e.printStackTrace();
+    }
+
+    return true;
+  }
+
+
   //this function returns either yes or no if the file is a valid XML or not.
   boolean isValidXml(){
     boolean valid = true;
     //what we should use
     Stack<String> xmlStack  = new Stack<>();
+
+    //check here if the line is the xml declaration
+    if (!isDeclarationValid()) return false;
 
     //only for testing
     ArrayList<String> strings = new ArrayList<>();
@@ -53,43 +117,6 @@ public class Parser {
             test = (char)reader.read();
           }
 
-          //removes unnecessary spaces from lines
-          line = line.replaceAll("( )+", " ");
-          line = line.replace("= ", "=");
-          line = line.replace(" =", "=");
-          line = line.replace(" ?", "?");
-
-          //checks if the first line is an XML declaration
-          if (strings.isEmpty()) {
-
-            int i = 14;
-            String s = "";
-
-            if (line.substring(0, 14).equals("?xml version=\"") && line.charAt( line.length() - 1 ) == '?') {
-              
-              while (line.charAt(i) != '\"' && line.charAt(i) != (char)(-1)) { s += line.charAt(i++); }
-
-              try {
-                Double.parseDouble(s);
-                s = "";
-                if (line.contains("encoding=\"")) {
-                  if (line.substring(i += 2, i + 10).equals("encoding=\"")) {
-                    i += 10;
-                    while (line.charAt(i) != '\"'){ s += line.charAt(i++); }
-                  }
-                }
-                if (!(line.length() - 2 == i)) return false;
-              } catch (NumberFormatException e) { 
-                return false; 
-              }
-
-            } else {
-              return false;
-            }
-
-          }
-
-
           //line -> only takes the string inside '<' and '>'
           //testing if the parsing is correct
           strings.add(line);
@@ -100,16 +127,6 @@ public class Parser {
             Notes: 
              - How to implement root element syntax? (link for XML Syntax: https://www.tutorialspoint.com/xml/xml_syntax.htm )
           */
-
-
-          //check here if the line is the xml declaration
-            /* 
-              1.) starts with ? and ends with ?
-              2.) first string is 'xml'. Has attributes, version and encoding.
-              3.) version should have a value of a float.
-              4.) encoding -> any string
-              5.) DO NOT PUSH TO STACK.
-            */
 
 
           //check here if the line is the start tag
@@ -154,8 +171,8 @@ public class Parser {
       Parser parser = new Parser(file);
 
       if (parser.isValidXml()) 
-        System.out.println("Yes");
-      else System.out.println("No");
+        System.out.println("YES");
+      else System.out.println("NO");
 
     }
     catch (Exception e){
