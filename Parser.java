@@ -117,7 +117,7 @@ public class Parser {
 
           //line -> only takes the string inside '<' and '>'
           //testing if the parsing is correct
-          if (line.contains(":") || line.contains("-") || line.contains(".")) return false;
+          //if (line.contains(":") || line.contains("-") || line.contains(".")) return false;
           strings.add(line);
 
           /*  
