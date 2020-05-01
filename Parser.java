@@ -32,7 +32,7 @@ public class Parser {
 
   //this function returns either yes or no if the file is a valid XML or not.
   boolean isValidXml(){
-    boolean valid = false;
+    boolean valid = true;
     //what we should use
     Stack<String> xmlStack  = new Stack<>();
 
@@ -76,12 +76,13 @@ public class Parser {
                   if (line.substring(i += 2, i + 10).equals("encoding=\"")) {
                     i += 10;
                     while (line.charAt(i) != '\"'){ s += line.charAt(i++); }
-                    if (!(line.length() - 2 == i)) return false;
                   }
                 }
+                if (!(line.length() - 2 == i)) return false;
               } catch (NumberFormatException e) { 
                 return false; 
               }
+
             } else {
               return false;
             }
