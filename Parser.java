@@ -30,6 +30,31 @@ public class Parser {
     return false;
   }
 
+//reads until ">"
+  String readTag () {
+    String line = "";
+    try {
+      char test = (char)reader.read();
+      while (test != '>') {
+        line += test;
+        test = (char)reader.read();
+      }
+      System.out.println(line);
+      test = (char)reader.read();
+    }
+    catch(Exception e) {
+      e.printStackTrace();
+    }
+
+    //removes unnecessary spaces
+    line = line.replaceAll("( )+", " ");
+    line = line.replace("= ", "=");
+    line = line.replace(" =", "=");
+    line = line.replace(" ?", "?");
+
+    return line;
+  }
+
 
 //check here if the line is the xml declaration
   /* 
@@ -42,26 +67,10 @@ public class Parser {
   boolean isDeclarationValid () {
     int i = 14;
     String s = "";
-    String line = "";
-
     try {
-      char test = (char)reader.read();
-        if (test == '<') {
-          test = (char)reader.read();
-          while (test != '>') {
-            line += test;
-            test = (char)reader.read();
-          }
-        }
-
-        //removes unnecessary spaces
-        line = line.replaceAll("( )+", " ");
-        line = line.replace("= ", "=");
-        line = line.replace(" =", "=");
-        line = line.replace(" ?", "?");
-
+      if ((char)reader.read() == '<') {
+        String line = readTag();
         if (line.substring(0, 14).equals("?xml version=\"") && line.charAt( line.length() - 1 ) == '?') {
-
           while (line.charAt(i) != '\"' && line.charAt(i) != (char)(-1)) { s += line.charAt(i++); }
           try {
             Double.parseDouble(s);
@@ -80,11 +89,12 @@ public class Parser {
         } else {
           return false;
         }
-
+      } else {
+        return false;
+      }
     } catch(Exception e) {
       e.printStackTrace();
     }
-
     return true;
   }
 
@@ -106,14 +116,7 @@ public class Parser {
       {
         if (test == '<')
         {
-          String line = "";
-          test = (char)reader.read();
-
-          while (test != '>')
-          {
-            line += test;
-            test = (char)reader.read();
-          }
+          String line = readTag();
 
           //line -> only takes the string inside '<' and '>'
           //testing if the parsing is correct
