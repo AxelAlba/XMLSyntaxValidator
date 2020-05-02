@@ -1,6 +1,8 @@
 import java.io.*;
 import java.util.*;
 import java.net.URL;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 public class Parser {
 
@@ -28,6 +30,10 @@ public class Parser {
       return true;
 
     return false;
+  }
+
+  String removeSpaces(String input) {
+    return input.replaceAll("\\s+", "");
   }
 
 //reads until ">"
@@ -72,7 +78,8 @@ public class Parser {
       if ((char)reader.read() == '<') {
         String line = readTag();
         if (line.substring(0, 14).equals("?xml version=\"") && line.charAt( line.length() - 1 ) == '?') {
-          while (line.charAt(i) != '\"' && line.charAt(i) != (char)(-1)) { s += line.charAt(i++); }
+          while (line.charAt(i) != '\"' && line.charAt(i) != (char)(-1)) 
+           s += line.charAt(i++); 
           try {
             Double.parseDouble(s);
             s = "";
@@ -83,9 +90,13 @@ public class Parser {
               }
             }
             if (!(line.length() - 2 == i)) return false;
-          } catch (NumberFormatException e) { return false; }
-        } else { return false; }
-      } else { return false; }
+          } catch (NumberFormatException e) { 
+            return false;
+           }
+        } 
+        else return false; 
+      } 
+      else  return false; 
     } catch(Exception e) {
       e.printStackTrace();
     }
@@ -115,12 +126,21 @@ public class Parser {
   }
 
 //may problema dito
-//splits spaces inside quotation marks <- di ko pa mafix
+//splits spaces inside quotation marks <- di ko pa mafix <-- fixed
   String readElement (String s, int i) {
-    String[] splited = s.split(" ");
-    boolean valid = true;
+   Pattern p = Pattern.compile("\"(.*?)\"");
+   Matcher m = p.matcher(s);
+   StringBuffer sb = new StringBuffer("");
+   while (m.find()) {
+       m.appendReplacement(sb, "\"" + removeSpaces(m.group(1)) + "\"");
+   }
+   m.appendTail(sb);
+   
+   String[] splited = sb.toString().split("\\s+");
 
-    if (i == 1) { splited[0] = splited[0].substring(1, splited[0].length());}
+    boolean valid = true;
+    if (i == 1) 
+      splited[0] = splited[0].substring(1, splited[0].length());
 
     int j = 1;
     if (splited.length > 1) {
@@ -192,18 +212,19 @@ public class Parser {
             line = readElement(line, 0);
             if (!(line.equals(""))){
               xmlStack.push(line);
-            System.out.println("Pushed " + line + " " + valid);
-            } else {
-              return false;
-            }
-          } else {
+              System.out.println("Pushed " + line + " " + valid);
+            } 
+            else return false;
+          } 
+          else {
             line = readElement(line, 1);
             if (!(line.equals(""))){
               if (line.equals(xmlStack.pop())){
                 System.out.println("Popped " + line + " " + valid);
-              } else { return false; }
-            } else { return false; }
-            
+              }
+              else return false; 
+            }
+            else return false; 
           }
 
         }
