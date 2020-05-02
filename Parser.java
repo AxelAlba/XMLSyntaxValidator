@@ -92,8 +92,9 @@ public class Parser {
     return true;
   }
 
+//Checkes if "something="blablabla" is valid"
   boolean isAttributeValid (String s) {
-    //insert code here
+    System.out.println(s);
     return true;
   }
 
@@ -101,22 +102,20 @@ public class Parser {
     String[] splited = s.split(" ");
     boolean valid = true;
 
-    if (i == 1) {
-      splited[0] = splited[0].substring(1, splited[0].length());
-      System.out.println("splited[0]/" + splited[0] + "/end");
-    }
+    if (i == 1) { splited[0] = splited[0].substring(1, splited[0].length());}
 
     int j = 1;
     if (splited.length > 1) {
       while (j < splited.length) {
-        valid = isAttributeValid(splited[j]);
+        if (!(isAttributeValid(splited[j]))) {
+          splited[0] = "";
+          return splited[0];
+        }
         j++;
       }
     }
 
-    if (splited[0].contains(":") || splited[0].contains("-") || splited[0].contains(".")) {
-      valid = false;
-    }
+    if (splited[0].contains(":") || splited[0].contains("-") || splited[0].contains(".")) valid = false;
 
     if (!valid) splited[0] = "";
     return splited[0];
@@ -174,16 +173,15 @@ public class Parser {
             line = readElement(line, 0);
             if (!(line.equals(""))){
               xmlStack.push(line);
-            System.out.println("Pushed " + line + valid);
+            System.out.println("Pushed " + line + " " + valid);
             } else {
               return false;
             }
           } else {
             line = readElement(line, 1);
             if (!(line.equals(""))){
-              System.out.println("line/" + line + "/end");
               if (line.equals(xmlStack.pop())){
-                System.out.println("Popped " + line + valid);
+                System.out.println("Popped " + line + " " + valid);
               } else { return false; }
             } else { return false; }
             
