@@ -163,6 +163,7 @@ public class Parser {
 
   //this function returns either yes or no if the file is a valid XML or not.
   boolean isValidXml(){
+    boolean wasEmpty = false;
     boolean valid = true;
     //what we should use
     Stack<String> xmlStack  = new Stack<>();
@@ -182,39 +183,22 @@ public class Parser {
           //line -> only takes the string inside '<' and '>'
           //testing if the parsing is correct
 
-          strings.add(line);
-
-          /*  
-            Main goal here is to push and pop from the stack to determine if it is valid or not. However, in between these lines, an error could occur which would make it not valid
-
-            Notes: 
-             - How to implement root element syntax? (link for XML Syntax: https://www.tutorialspoint.com/xml/xml_syntax.htm )
-          */
-
-
-          //check here if the line is the start tag
-            /*
-              1.)check if there are spaces, if there is, check if the attributes are valid
-              2.) check if the line does end with '/' -> tag was ended. DO NOT PUSH TO STACK.
-              3.) if it is a valid start stack, PUSH only the element to the stack i.e. <element> -> push 'element'
-            */
-
-          //check here if it is the end tag
-          /*
-            1.) end tags should start with '/'.
-            2.) end tags should have the same element name(case-sensitive) as the start tag.
-            3.) end tags should have no attributes.
-            4.) Pop from stack if it is a valid end tag.
-          */
-          
+          strings.add(line);    
           //this works
           if (!(line.charAt(0) == '/')) {
             if(!(line.charAt(line.length()-1) == '/'))
             {
               line = readElement(line, 0);
               if (!(line.equals(""))){
+                if (wasEmpty)
+                {
+                  System.out.println("was empty was triggered.");
+                  return false;
+                }
+                else{
                 xmlStack.push(line);
                 System.out.println("Pushed " + line + " " + valid);
+                }
               } 
               else return false;
             }
@@ -231,6 +215,10 @@ public class Parser {
             if (!(line.equals(""))){
               if (line.equals(xmlStack.pop())){
                 System.out.println("Popped " + line + " " + valid);
+                if (xmlStack.empty())
+                {
+                  wasEmpty = true;
+                }
               }
               else return false; 
             }
