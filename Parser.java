@@ -94,8 +94,22 @@ public class Parser {
 
 //Checkes if "something="blablabla" is valid"
   boolean isAttributeValid (String s) {
+    boolean valid = true;
     System.out.println(s);
-    return true;
+
+    String[] splited = s.split("=");
+    if (splited.length != 2) return false;
+
+    if (splited[0].contains(":") || splited[0].contains("-") || splited[0].contains(".")) 
+      valid = false;
+    
+    if (splited[1].charAt(0) == '"' && splited[1].charAt(splited[1].length() - 1) == '"') {
+      if (splited[1].length() - 1 == 0) return false;
+    } else {
+      valid = false;
+    }
+
+    return valid;
   }
 
   String readElement (String s, int i) {
@@ -115,7 +129,8 @@ public class Parser {
       }
     }
 
-    if (splited[0].contains(":") || splited[0].contains("-") || splited[0].contains(".")) valid = false;
+    if (splited[0].contains(":") || splited[0].contains("-") || splited[0].contains(".")) 
+      valid = false;
 
     if (!valid) splited[0] = "";
     return splited[0];
