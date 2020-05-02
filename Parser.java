@@ -209,12 +209,22 @@ public class Parser {
           
           //this works
           if (!(line.charAt(0) == '/')) {
-            line = readElement(line, 0);
-            if (!(line.equals(""))){
-              xmlStack.push(line);
-              System.out.println("Pushed " + line + " " + valid);
-            } 
-            else return false;
+            if(!(line.charAt(line.length()-1) == '/'))
+            {
+              line = readElement(line, 0);
+              if (!(line.equals(""))){
+                xmlStack.push(line);
+                System.out.println("Pushed " + line + " " + valid);
+              } 
+              else return false;
+            }
+            else {
+              line = readElement(line, 0);
+              if (!(line.equals(""))){
+                System.out.println("This line ended by itself: " + line + " -> " + valid);
+              } 
+              else return false;
+            }
           } 
           else {
             line = readElement(line, 1);

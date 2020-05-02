@@ -1,28 +1,16 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<WindowElement xmins="http://windiws.lbl.gov" xsi="http://www.w3.org/2001/XMLSchema-instance" schemaLocation="http://windows.lbl.gov BSDG-v1.4xsd">
-<Optical>
-<Layer>
-    <Material>
-        <Name>Perfect Diffuser</Name>
-        <Manufacturer>ACME Surfaces</Manufacturer>
-        <Width unit="Meter">1.000</Width>
-        <Height unit="Meter">1.000</Height>
-    </Material>
-    <DataDefinition>
-        <IncidentDataStructure>TensorTree3</IncidentDataStructure>
-    </DataDefinition>
-    <WavelengthData>
-        <LayerNumber>System</LayerNumber>
-        <Wavelength unit="Integral">Visible</Wavelength>
-        <SourceSpectrum>CIE Illuminant D65 1nm.ssp</SourceSpectrum>
-        <DetectorSpectrum>ASTM E308 1931 Y.dsp</DetectorSpectrum>
-        <WavelengthDataBlock>
-            <WavelengthDataDirection>Reflection Back</WavelengthDataDirection>
-            <AngleBasis>LBNL/Shirley-Chiu</AngleBasis>
-            <ScatteringDataType>BRDF</ScatteringDataType>
-            <ScatteringData>[ 0.318309886 ]</ScatteringData>
-        </WavelengthDataBlock>
-    </WavelengthData>
-</Layer>
-</Optical>
-</WindowElement>
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLFile>
+    <Colors>
+        <Color1/>
+        <Color2>Blue</Color2>
+        <Color3>Black</Color3>
+        <Color4 Special="Light\tOpaque">Green</Color4>
+        <Color5>Red</Color5>
+    </Colors>
+    <Fruits>
+        <Fruits1>Apple</Fruits1>
+        <Fruits2>Pineapple</Fruits2>
+        <Fruits3>Grapes</Fruits3>
+        <Fruits4>Melon</Fruits4>
+    </Fruits>
+</XMLFile>
