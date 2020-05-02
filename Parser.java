@@ -63,6 +63,7 @@ public class Parser {
     4.) encoding -> any string
     5.) DO NOT PUSH TO STACK.
   */
+//works
   boolean isDeclarationValid () {
     int i = 14;
     String s = "";
@@ -93,6 +94,7 @@ public class Parser {
   }
 
 //Checkes if "something="blablabla" is valid"
+//works
   boolean isAttributeValid (String s) {
     boolean valid = true;
     System.out.println(s);
@@ -112,6 +114,8 @@ public class Parser {
     return valid;
   }
 
+//may problema dito
+//splits spaces inside quotation marks <- di ko pa mafix
   String readElement (String s, int i) {
     String[] splited = s.split(" ");
     boolean valid = true;
@@ -143,7 +147,6 @@ public class Parser {
     //what we should use
     Stack<String> xmlStack  = new Stack<>();
 
-    //check here if the line is the xml declaration
     if (!isDeclarationValid()) return false;
 
     //only for testing
@@ -184,6 +187,7 @@ public class Parser {
             4.) Pop from stack if it is a valid end tag.
           */
           
+          //this works
           if (!(line.charAt(0) == '/')) {
             line = readElement(line, 0);
             if (!(line.equals(""))){
