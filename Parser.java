@@ -3,14 +3,16 @@ import java.util.*;
 import java.net.URL;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+import java.lang.*;
 
 public class Parser {
 
   BufferedReader reader;
 
-  public Parser(File file){
+  public Parser(String s){
     try{
-      reader = new BufferedReader(new FileReader(file));
+      reader = new BufferedReader(new StringReader(s));
+      System.out.print((char)reader.read());
     }
     catch(Exception e){
       e.printStackTrace();
@@ -168,8 +170,11 @@ public class Parser {
     //what we should use
     Stack<String> xmlStack  = new Stack<>();
 
-    if (!isDeclarationValid()) return false;
-
+    if (!isDeclarationValid()) 
+    {
+      System.out.println("isDeclarationValid was triggered.");
+      return false;
+    }
     //only for testing
     ArrayList<String> strings = new ArrayList<>();
     try {
@@ -200,14 +205,22 @@ public class Parser {
                 System.out.println("Pushed " + line + " " + valid);
                 }
               } 
-              else return false;
+              else         
+              {
+                System.out.println("readElement was triggered.");
+                return false;
+              }
             }
             else {
               line = readElement(line, 0);
               if (!(line.equals(""))){
                 System.out.println("This line ended by itself: " + line + " -> " + valid);
               } 
-              else return false;
+              else 
+              {
+                System.out.println("readElement was triggered.");
+                return false;
+              }
             }
           } 
           else {
@@ -220,9 +233,17 @@ public class Parser {
                   wasEmpty = true;
                 }
               }
-              else return false; 
+              else 
+              {
+                System.out.println("pop failure was triggered.");
+                return false; 
+              }
             }
-            else return false; 
+            else 
+            {
+              System.out.println("readElement was triggered.");
+              return false;
+            } 
           }
 
         }
@@ -243,6 +264,7 @@ public class Parser {
       Are we suppose to use something like this for the input of sir in hackerrank?
     */
     //URL Input_url = ClassLoader.getSystemResource("input.txt");  
+    /*
     File file = null;
     String xmlFile = "input.xml";
 
@@ -259,5 +281,32 @@ public class Parser {
     catch (Exception e){
       e.printStackTrace();
     }
+    */
+    Scanner in = new Scanner (System.in);
+    StringBuilder userInputResult = new StringBuilder();
+    while (in.hasNextLine())
+    {
+      String line = in.nextLine();
+      if (line.isEmpty()) {
+          break;
+      }
+      userInputResult.append("" + line);
+    }
+    System.out.println(userInputResult.toString());
+    in.close();
+
+    try {
+      Parser parser = new Parser(userInputResult.toString());
+
+      if (parser.isValidXml()) 
+        System.out.println("YES");
+      else System.out.println("NO");
+
+    }
+    catch (Exception e){
+      e.printStackTrace();
+    }
+
+
   }
 }
