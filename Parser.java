@@ -12,7 +12,7 @@ public class Parser {
   public Parser(String s){
     try{
       reader = new BufferedReader(new StringReader(s));
-      System.out.print((char)reader.read());
+      //System.out.print((char)reader.read());
     }
     catch(Exception e){
       e.printStackTrace();
@@ -47,7 +47,7 @@ public class Parser {
         line += test;
         test = (char)reader.read();
       }
-      System.out.println(line);
+      //System.out.println(line);
       test = (char)reader.read();
     } catch(Exception e) {
       e.printStackTrace();
@@ -110,7 +110,7 @@ public class Parser {
 //works
   boolean isAttributeValid (String s) {
     boolean valid = true;
-    System.out.println(s);
+    //System.out.println(s);
 
     String[] splited = s.split("=");
     if (splited.length != 2) return false;
@@ -172,7 +172,7 @@ public class Parser {
 
     if (!isDeclarationValid()) 
     {
-      System.out.println("isDeclarationValid was triggered.");
+      ////System.out.println("isDeclarationValid was triggered.");
       return false;
     }
     //only for testing
@@ -197,28 +197,28 @@ public class Parser {
               if (!(line.equals(""))){
                 if (wasEmpty)
                 {
-                  System.out.println("was empty was triggered.");
+                  //System.out.println("was empty was triggered.");
                   return false;
                 }
                 else{
                 xmlStack.push(line);
-                System.out.println("Pushed " + line + " " + valid);
+                //System.out.println("Pushed " + line + " " + valid);
                 }
               } 
               else         
               {
-                System.out.println("readElement was triggered.");
+                //System.out.println("readElement was triggered.");
                 return false;
               }
             }
             else {
               line = readElement(line, 0);
               if (!(line.equals(""))){
-                System.out.println("This line ended by itself: " + line + " -> " + valid);
+                //System.out.println("This line ended by itself: " + line + " -> " + valid);
               } 
               else 
               {
-                System.out.println("readElement was triggered.");
+                //System.out.println("readElement was triggered.");
                 return false;
               }
             }
@@ -227,7 +227,7 @@ public class Parser {
             line = readElement(line, 1);
             if (!(line.equals(""))){
               if (line.equals(xmlStack.pop())){
-                System.out.println("Popped " + line + " " + valid);
+                //System.out.println("Popped " + line + " " + valid);
                 if (xmlStack.empty())
                 {
                   wasEmpty = true;
@@ -235,13 +235,13 @@ public class Parser {
               }
               else 
               {
-                System.out.println("pop failure was triggered.");
+                //System.out.println("pop failure was triggered.");
                 return false; 
               }
             }
             else 
             {
-              System.out.println("readElement was triggered.");
+              //System.out.println("readElement was triggered.");
               return false;
             } 
           }
@@ -249,8 +249,8 @@ public class Parser {
         }
         test = (char)reader.read();
       }
-      for (int i = 0; i < strings.size(); i++)
-        System.out.println(strings.get(i));
+      //for (int i = 0; i < strings.size(); i++)
+        //System.out.println(strings.get(i));
     }
     catch(Exception e) {
       e.printStackTrace();
@@ -260,28 +260,6 @@ public class Parser {
 
 
   public static void main(String[] args) {
-    /*
-      Are we suppose to use something like this for the input of sir in hackerrank?
-    */
-    //URL Input_url = ClassLoader.getSystemResource("input.txt");  
-    /*
-    File file = null;
-    String xmlFile = "input.xml";
-
-    try {
-      //file = new File(Input_url.toURI());
-      file = new File(xmlFile);
-      Parser parser = new Parser(file);
-
-      if (parser.isValidXml()) 
-        System.out.println("YES");
-      else System.out.println("NO");
-
-    }
-    catch (Exception e){
-      e.printStackTrace();
-    }
-    */
     Scanner in = new Scanner (System.in);
     StringBuilder userInputResult = new StringBuilder();
     while (in.hasNextLine())
@@ -292,7 +270,6 @@ public class Parser {
       }
       userInputResult.append("" + line);
     }
-    System.out.println(userInputResult.toString());
     in.close();
 
     try {
