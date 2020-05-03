@@ -51,6 +51,7 @@ public class Parser {
       test = (char) reader.read();
     } catch (Exception e) {
       e.printStackTrace();
+      return "";
     }
 
     // removes unnecessary spaces
@@ -101,6 +102,7 @@ public class Parser {
         return false;
     } catch (Exception e) {
       e.printStackTrace();
+      return false;
     }
 
     return true;
