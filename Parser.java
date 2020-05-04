@@ -160,8 +160,11 @@ public class Parser {
     String[] splited = sb.toString().split("\\s+");
 
     boolean valid = true;
-    if (i == 1)
+    boolean valid = true;
+    if (i == 1){
       splited[0] = splited[0].substring(1, splited[0].length());
+      if (splited.length > 1) return "";
+    }
 
     int j = 1;
     if (splited.length > 1) {
