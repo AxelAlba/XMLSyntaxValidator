@@ -262,13 +262,10 @@ public class Parser {
      * 
      * } catch (Exception e){ e.printStackTrace(); }
      */
-    Scanner in = new Scanner(System.in);
+    Scanner in = new Scanner(new BufferedInputStream(System.in));
     String userInputResult = "";
     while (in.hasNextLine()) {
       String line = in.nextLine();
-      if (line.isEmpty()) {
-        break;
-      }
       userInputResult += "\n" + line;
     }
     //System.out.println(userInputResult.toString());
