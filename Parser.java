@@ -241,6 +241,8 @@ public class Parser {
     } catch (Exception e) {
       e.printStackTrace();
     }
+    if (!xmlStack.empty())
+      return false;
     return valid;
   }
 
