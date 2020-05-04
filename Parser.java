@@ -121,24 +121,29 @@ public class Parser {
   // Checkes if "something="blablabla" is valid"
   // works
   boolean isAttributeValid(String s) {
-    boolean valid = true;
-    //System.out.println(s);
 
     String[] splited = s.split("=");
     if (splited.length != 2)
       return false;
 
-    if (splited[0].contains(":") || splited[0].contains("-") || splited[0].contains("."))
-      valid = false;
+    for (int i = 0; i < splited[0].length(); i++){
+      if(!(isLetter(splited[0].charAt(i)) || isNumber(splited[0].charAt(i))|| splited[0].charAt(i) == '_'))
+        return false;
+    }
+
+    for (int i = 1; i < splited[1].length() - 1; i++){
+      if((splited[1].charAt(i) == '"') && (splited[1].charAt(i-1) != '\\'))
+        return false;
+    }
 
     if (splited[1].charAt(0) == '"' && splited[1].charAt(splited[1].length() - 1) == '"') {
       if (splited[1].length() - 1 == 0)
         return false;
     } else {
-      valid = false;
+      return false;
     }
 
-    return valid;
+    return true;
   }
 
   // may problema dito
