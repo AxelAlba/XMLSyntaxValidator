@@ -1,9 +1,7 @@
 import java.io.*;
 import java.util.*;
-import java.net.URL;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
-import java.lang.*;
 
 public class Parser {
 
