@@ -34,6 +34,16 @@ public class Parser {
     return false;
   }
 
+  boolean isValidTag (String s)
+  {
+    for (int i = 0; i < s.length(); i++)
+    {
+      if(!(isLetter(s.charAt(i)) || isNumber(s.charAt(i))|| s.charAt(i) == '_'))
+        return false;
+    }
+    return true;
+  }
+
   String removeSpaces(String input) {
     return input.replaceAll("\\s+", "");
   }
@@ -201,6 +211,10 @@ public class Parser {
                 } else {
                   xmlStack.push(line);
                   //System.out.println("Pushed " + line + " " + valid);
+
+                  //check here if the tag name is valid 
+                  if (!(isValidTag(xmlStack.peek())))
+                    return false;
                 }
               } else {
                 //System.out.println("readElement was triggered.");
