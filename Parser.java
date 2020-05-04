@@ -58,7 +58,6 @@ public class Parser {
         test = (char) reader.read();
       }
       //System.out.println(line);
-      test = (char) reader.read();
     } catch (Exception e) {
       e.printStackTrace();
       return "";
