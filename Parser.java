@@ -1,3 +1,10 @@
+/*
+  STALGCM Machine Project Code
+  Members:
+  ALBA, Axel
+  GO, Thea
+  VELASCO, Dan John
+*/
 import java.io.*;
 import java.util.*;
 import java.util.regex.Pattern;
@@ -123,8 +130,9 @@ public class Parser {
     if (splited.length != 2)
       return false;
 
-    // if attribute name contains anything but alphabet, number, _, reject it
-    // problem: it accepts attribute names starting with number 
+    // if attribute name contains anything but alphabet, number, _, OR it starts with a number, reject it
+    if (isNumber(splited[0].charAt(0)))
+      return false;
     for (int i = 0; i < splited[0].length(); i++){
       if(!(isLetter(splited[0].charAt(i)) || isNumber(splited[0].charAt(i))|| splited[0].charAt(i) == '_'))
         return false;
