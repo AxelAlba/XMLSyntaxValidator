@@ -130,8 +130,8 @@ public class Parser {
     if (splited.length != 2)
       return false;
 
-    // if attribute name contains anything but alphabet, number, _, OR it starts with a number, reject it
-    if (isNumber(splited[0].charAt(0)))
+    // if attribute name contains anything but alphabet, number, _, OR it starts with any other than a character or an underscore, reject it
+    if (!(isLetter(splited[0].charAt(0)) || splited[0].charAt(0) == '_'))
       return false;
     for (int i = 0; i < splited[0].length(); i++){
       if(!(isLetter(splited[0].charAt(i)) || isNumber(splited[0].charAt(i))|| splited[0].charAt(i) == '_'))
